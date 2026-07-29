@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMG Townsuper Icon</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --success: #00a859;
+            --danger: #e71d36;
+            --dark: #23272a;
+            --light-bg: #f6f8fa;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Noto Sans Ethiopic', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            padding-bottom: 70px;
+        }
+
+        /* Language Switcher (Top Right) */
+        .lang-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            overflow: hidden;
+            width: 140px;
+        }
+
+        .lang-dropdown button {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .lang-dropdown button:hover {
+            background: #f0f0f0;
+        }
+
+        /* Main Container */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin: 20px 0 30px 0;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Forms and Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #aaa;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(78, 84, 200, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Dashboard Panel */
+        #dashboard-panel {
+            display: none;
+        }
+
+        .wallet-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .wallet-box {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .wallet-box h3 {
+            font-size: 11px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .wallet-box .amt {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .earning-stats {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        /* Lists */
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            background: #e5e7eb;
+        }
+
+        .badge.active {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge.locked {
+            background: #ffe3e3;
+            color: var(--danger);
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #856404;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+            z-index: 999;
+        }
+
+        .nav-tab {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #9ca3af;
+            cursor: pointer;
+            width: 20%;
+        }
+
+        .nav-tab i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+        }
+
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        /* Grid Options */
+        .grid-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .grid-btn {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Selector Button (Top Right) -->
+    <div class="lang-container">
+        <button class="lang-btn" onclick="toggleDropdown()">
+            <i class="fa-solid fa-globe"></i> <span id="active-lang">Afaan Oromoo</span>
+        </button>
+        <div class="lang-dropdown" id="langMenu">
+            <button onclick="setLang('om')">Afaan Oromoo</button>
+            <button onclick="setLang('am')">አማርኛ</button>
+            <button onclick="setLang('en')">English</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1><i class="fa-solid fa-cubes-stacked"></i> <span>IMG Townsuper Icon</span></h1>
+        </header>
+
+        <!-- 1. AUTHENTICATION CONTAINER -->
+        <div id="auth-panel">
+            <!-- Register Card -->
+            <div id="register-view" class="card">
+                <h2 id="t-register"><i class="fa-solid fa-user-plus"></i> Galmee</h2>
+                <div class="form-group">
+                    <label id="l-phone">Lakkoofsa Bilbilaa</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="r-phone-in" placeholder="09...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="l-pass">Jecha Iccitii</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="r-pass-in">
+                    </div>
+                </div>
+                <div class="form-group">
