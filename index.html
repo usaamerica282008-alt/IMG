@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telebirr App - Single File App</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --dark: #333;
+            --light: #f0f2f5;
+        }
+        body { font-family: Arial, sans-serif; background: var(--light); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 400px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 20px; box-sizing: border-box; display: none; }
+        .active { display: block; }
+        h2 { text-align: center; color: var(--dark); margin-top: 0; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-green { background: var(--success); }
+        .btn-red { background: var(--danger); }
+        .card { background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 15px; }
+        .card h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .card p { margin: 5px 0; font-size: 14px; color: #444; }
+        .link-text { text-align: center; color: var(--primary); margin-top: 15px; cursor: pointer; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f4f4f4; }
+        .alert-info { color: var(--danger); font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="loginScreen" class="container active">
+        <h2>Login Panel</h2>
+        <div class="input-group">
+            <label>Phone Number (ykn 'admin')</label>
+            <input type="text" id="loginPhone" placeholder="09...">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="loginPass" placeholder="******">
+        </div>
+        <button onclick="handleLogin()">Login</button>
+        <p class="link-text" onclick="switchScreen('registerScreen')">Account uumi (Register)</p>
+    </div>
+
+    <!-- 2. REGISTRATION SCREEN -->
+    <div id="registerScreen" class="container">
+        <h2>Registration</h2>
+        <div class="input-group">
+            <label>Phone Number</label>
+            <input type="number" id="regPhone" placeholder="09...">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="regPass" placeholder="******">
+        </div>
+        <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="regConfirmPass" placeholder="******">
+        </div>
+        <button class="btn-green" onclick="handleRegister()">Register</button>
+        <p class="link-text" onclick="switchScreen('loginScreen')">Duraan Account qabda? Login</p>
+    </div>
+
+    <!-- 3. USER DASHBOARD SCREEN -->
+    <div id="dashboardScreen" class="container">
+        <h2 style="color: var(--primary); text-align: left; font-size: 20px;">Dashboard Panel</h2>
+        
+        <div class="card">
+            <h3>⚡ Recharge Account</h3>
+            <p>Name: <span id="dashName">Abu Eyew</span></p>
+            <p>Telebirr: <b>0934286256</b></p>
+            <input type="text" id="recTxId" placeholder="Transaction ID Galchi" style="margin-top: 5px; padding: 8px;">
+            <button class="btn-green" style="padding: 8px; font-size: 14px;" onclick="submitRecharge()">Upload Receipt</button>
+        </div>
+
+        <div class="card">
+            <h3>💰 Personal Wallet</h3>
+            <p>Today Earning: <b id="dashToday">0.00 ETB</b></p>
+            <p>Current Balance: <b style="color: var(--success); font-size: 18px;" id="dashBalance">0.00 ETB</b></p>
+        </div>
+
+        <div class="card">
+            <h3>📋 Task (5 Videos)</h3>
+            <p id="dashVipStatus">VIP 0 = 5 x 15 ETB (Trainee Member)</p>
+            <ul id="taskList" style="padding-left: 20px; font-size: 14px;">
+                <li>Video Task 1 - <a href="#" onclick="completeTask(15)">Daawwadhu</a></li>
+                <li>Video Task 2 - <a href="#" onclick="completeTask(15)">Daawwadhu</a></li>
+                <li>Video Task 3 - <a href="#" onclick="completeTask(15)">Daawwadhu</a></li>
+            </ul>
+            <p class="alert-info">Sunday is rest day so task is no assigned</p>
+        </div>
+
+        <div class="card">
+            <h3>🏧 Withdrawal</h3>
+            <p>Limits: 500, 1500, 4500, 12000 ETB</p>
+            <input type="number" id="witAmount" placeholder="Amount Galchi" style="padding: 8px; margin-bottom: 5px;">
+            <button class="btn-red" style="padding: 8px; font-size: 14px;" onclick="submitWithdraw()">Withdraw Request</button>
+            <p style="color: gray; font-size: 11px; margin-top: 5px;">Time: Monday - Friday (9:00 AM - 5:30 PM)</p>
+        </div>
+
+        <button class="btn-red" onclick="logout()">Log Out</button>
+    </div>
+
+    <!-- 4. ADMIN CONTROL PANEL SCREEN -->
+    <div id="adminScreen" class="container" style="max-width: 500px;">
+        <h2 style="color: var(--danger); text-align: left; font-size: 20px;">⚙️ Admin Control Panel</h2>
+        
+        <div class="card" style="border-left: 4px solid var(--danger);">
+            <h3>All User Information (Member List)</h3>
+            <table>
+                <thead>
+                    <tr><th>Phone</th><th>Balance</th><th>VIP</th></tr>
+                </thead>
+                <tbody id="adminUserTable">
+                    <!-- Ragaan asitti guutama -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--success);">
+            <h3>Recharge (Approve & Reject)</h3>
+            <div class="input-group">
+                <input type="text" id="appRechargePhone" placeholder="User Phone Number">
+                <input type="number" id="appRechargeAmount" placeholder="Amount (ETB)" style="margin-top: 5px;">
+                <button class="btn-green" style="padding: 8px; font-size: 14px;" onclick="adminApproveRecharge()">Approve Recharge</button>
+            </div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--dark);">
+            <h3>VIP Control (Open & Close)</h3>
+            <p>VIP 1 hanga 10 asitti banama ykn cufama.</p>
+            <button class="btn-red" style="width: 48%; display: inline-block; padding: 8px;" onclick="alert('VIP 1 Cufameera!')">VIP 1 Cufu</button>
+            <button class="btn-green" style="width: 48%; display: inline-block; padding: 8px;" onclick="alert('VIP 1 Banameera!')">VIP 1 Banu</button>
+        </div>
+
+        <button onclick="logout()">← Gara Login Deebi'i</button>
+    </div>
+
+    <!-- APPLICATION LOGIC (JAVASCRIPT) -->
+    <script>
+        // Ragaalee hunda Browser (LocalStorage) keessatti kuusuu
+        let db = JSON.parse(localStorage.getItem('telebirr_db')) || { users: [], activeUser: null };
+
+        function saveDB() {
+            localStorage.setItem('telebirr_db', JSON.stringify(db));
+        }
+
+        function switchScreen(screenId) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if(screenId === 'dashboardScreen') updateDashboard();
+            if(screenId === 'adminScreen') updateAdminPanel();
+        }
+
+        function handleRegister() {
+            const phone = document.getElementById('regPhone').value;
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regConfirmPass').value;
+
+            if (!phone || !pass) return alert('Maaloo ragaa guutuu fill godhi!');
+            if (pass !== confirm) return alert('Password wal hin fakkaatu!');
+            if (db.users.find(u => u.phone === phone)) return alert('Lakkoofsi kun duraan galmaayeera!');
+
+            let newUser = { phone: phone, password: pass, balance: 0, todayEarn: 0, vip: 0 };
+            db.users.push(newUser);
+            saveDB();
+            alert('Milkiidhaan galmaayeera! Amma Login godhadhu.');
+            switchScreen('loginScreen');
+        }
+
+        function handleLogin() {
+            const phone = document.getElementById('loginPhone').value;
+            const pass = document.getElementById('loginPass').value;
+
+            if (phone === 'admin' && pass === 'admin123') {
+                return switchScreen('adminScreen');
+            }
+
+            let user = db.users.find(u => u.phone === phone && u.password === pass);
+            if (user) {
+                db.activeUser = phone;
+                saveDB();
+                switchScreen('dashboardScreen');
+            } else {
+                alert('Lakkoofsa ykn password sirrii miti!');
+            }
+        }
+
+        function updateDashboard() {
+            let user = db.users.find(u => u.phone === db.activeUser);
+            if (!user) return;
+            document.getElementById('dashBalance').innerText = user.balance.toFixed(2) + " ETB";
+            document.getElementById('dashToday').innerText = user.todayEarn.toFixed(2) + " ETB";
+            document.getElementById('dashVipStatus').innerText = `VIP ${user.vip} = (Trainee Member)`;
+        }
+
+        function completeTask(reward) {
