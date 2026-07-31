@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMG Earning App - Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #6366f1;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar Settings */
+        .top-bar {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
+        
+        .lang-switcher select {
+            padding: 8px 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .main-container { grid-template-columns: 2fr 1fr; }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 { margin-top: 0; color: #fff; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+        /* Dashboard Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-box {
+            background-color: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-box h4 { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+        .stat-box p { margin: 8px 0 0; font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+
+        /* Buttons & Inputs */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn-accent { background-color: var(--accent); }
+        .btn-accent:hover { background-color: #4f46e5; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--text-muted); }
+        .input-group input, .input-group select {
+            width: 100%; padding: 12px; background-color: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: white; box-sizing: border-box;
+        }
+
+        /* VIP Tier Grid */
+        .vip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+        }
+        .vip-card {
+            background-color: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;
+        }
+        .vip-card.active { border-color: var(--accent); background-color: rgba(99, 102, 241, 0.1); }
+
+        /* Video Task Box */
+        .video-box {
+            background: #000; border-radius: 8px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-bottom: 15px; border: 1px solid var(--border);
+        }
+
+        /* Tabs for Admin / User view */
+        .view-tabs { display: flex; gap: 10px; margin-bottom: 20px; padding: 0 20px; max-width: 1200px; margin: 20px auto 0; }
+        .tab-btn { background: var(--card-bg); border: 1px solid var(--border); color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        .tab-btn.active { background: var(--accent); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <div class="top-bar">
+        <div class="logo">✨ IMG Earn</div>
+        <div class="lang-switcher">
+            <select id="langSelect" onchange="switchLanguage()">
+                <option value="or">Afaan Oromo</option>
+                <option value="am">አማርኛ (Amharic)</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- TABS TO SWITCH VIEWS -->
+    <div class="view-tabs">
+        <button class="tab-btn active" id="userViewTab" onclick="switchView('user')">User Dashboard</button>
+        <button class="tab-btn" id="adminViewTab" onclick="switchView('admin')">Admin Panel</button>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="main-container" id="user-panel">
+        
+        <!-- LEFT SIDE: DASHBOARD & TASKS -->
+        <div>
+            <!-- Wallets Info -->
+            <div class="card">
+                <h2 id="txt-dashboard">Dash Board</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h4 id="txt-personal-wallet">Personal Wallet</h4>
+                        <p id="personal-amt">120.00 ETB</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="txt-income-wallet">Income Wallet</h4>
+                        <p id="income-amt">450.00 ETB</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Task Arena -->
+            <div class="card">
+                <h2 id="txt-task-title">Daily Task (5 Videos)</h2>
+                <div class="video-box">
+                    <span style="font-size: 3rem;">📺</span>
+                    <p id="txt-video-placeholder" style="color: var(--text-muted); margin-top: 10px;">Click below to watch assigned video</p>
+                </div>
+                <button class="btn btn-accent" onclick="completeVideoTask()" id="txt-watch-btn">Watch Video & Earn</button>
+            </div>
+
+            <!-- VIP Tier Management -->
+            <div class="card">
+                <h2>VIP Tiers</h2>
+                <div class="vip-grid">
+                    <div class="vip-card active"><strong>VIP 1</strong><br><small>2,100 ETB</small></div>
+                    <div class="vip-card"><strong>VIP 2</strong><br><small>6,200 ETB</small></div>
+                    <div class="vip-card"><strong>VIP 5</strong><br><small>66,000 ETB</small></div>
+                    <div class="vip-card"><strong>VIP 10</strong><br><small>2,700,000 ETB</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: RECHARGE & WITHDRAWAL -->
+        <div>
+            <!-- Recharge Account -->
+            <div class="card">
+                <h2 id="txt-recharge-title">Recharge Account</h2>
+                <p style="font-size: 0.85rem; color: #10b981;">Telebirr: 0934286256 (Abu Ezed)</p>
+                <div class="input-group">
+                    <label id="txt-txid-lbl">Transaction ID</label>
+                    <input type="text" placeholder="Ex: TXN9834273">
+                </div>
+                <div class="input-group">
+                    <label id="txt-receipt-lbl">Upload Receipt Screenshot</label>
+                    <input type="file" accept="image/*">
+                </div>
+                <button class="btn" onclick="alert('Recharge Submitted!')" id="txt-recharge-btn">Submit Recharge</button>
+            </div>
+
+            <!-- Withdrawal Requests -->
+            <div class="card">
+                <h2 id="txt-withdraw-title">Withdrawal</h2>
+                <p style="font-size: 0.75rem; color: var(--text-muted);" id="txt-withdraw-time">Time: Monday - Friday (9:00 AM - 5:30 PM)</p>
+                <div class="input-group">
+                    <label id="txt-amt-lbl">Select Amount (ETB)</label>
+                    <select>
+                        <option>500</option>
+                        <option>1500</option>
+                        <option>4500</option>
+                        <option>12000</option>
+                        <option>50000</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label id="txt-bank-lbl">Bank Transfer (CBE / Telebirr)</label>
+                    <input type="text" placeholder="Account Name / Number">
+                </div>
+                <button class="btn" style="background-color: var(--danger);" onclick="alert('Withdrawal request sent!')" id="txt-withdraw-btn">Request Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL WRAPPER -->
+    <div class="main-container" id="admin-panel" style="display: none;">
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2 id="txt-admin-panel-title">Admin Panel (All User Information)</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border); color: var(--text-muted);">
+                        <th style="padding: 10px;">User</th>
+                        <th>VIP</th>
+                        <th>Recharge Request</th>
